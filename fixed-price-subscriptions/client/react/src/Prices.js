@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
-import { Redirect } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { withRouter } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 const Prices = () => {
   const [prices, setPrices] = useState([]);
@@ -8,31 +8,38 @@ const Prices = () => {
 
   useEffect(() => {
     const fetchPrices = async () => {
-      const {prices} = await fetch('/config').then(r => r.json());
+      const { prices } = await fetch("/config").then((r) => r.json());
       setPrices(prices);
     };
     fetchPrices();
-  }, [])
+  }, []);
 
   const createSubscription = async (priceId) => {
-    const {subscriptionId, clientSecret} = await fetch('/create-subscription', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        priceId
-      }),
-    }).then(r => r.json());
+    const { subscriptionId, clientSecret } = await fetch(
+      "/create-subscription",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          priceId,
+        }),
+      }
+    ).then((r) => r.json());
 
     setSubscriptionData({ subscriptionId, clientSecret });
-  }
+  };
 
-  if(subscriptionData) {
-    return <Redirect to={{
-      pathname: '/subscribe',
-      state: subscriptionData
-    }} />
+  if (subscriptionData) {
+    return (
+      <Redirect
+        to={{
+          pathname: "/subscribe",
+          state: subscriptionData,
+        }}
+      />
+    );
   }
 
   return (
@@ -45,19 +52,17 @@ const Prices = () => {
             <div key={price.id}>
               <h3>{price.product.name}</h3>
 
-              <p>
-                ${price.unit_amount / 100} / month
-              </p>
+              <p>RM{(price.unit_amount / 100).toFixed(2)} / month</p>
 
               <button onClick={() => createSubscription(price.id)}>
                 Select
               </button>
             </div>
-          )
+          );
         })}
       </div>
     </div>
   );
-}
+};
 
 export default withRouter(Prices);

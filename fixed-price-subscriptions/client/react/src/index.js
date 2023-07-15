@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import {Elements} from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
-fetch('/config')
+fetch("/config")
   .then((response) => response.json())
   .then((data) => {
     const stripePromise = loadStripe(data.publishableKey);
@@ -15,9 +15,9 @@ fetch('/config')
           <App />
         </Elements>
       </React.StrictMode>,
-      document.getElementById('root')
+      document.getElementById("root")
     );
   })
   .catch((error) => {
-    console.error('Error:', error);
+    console.error("Error:", error);
   });
